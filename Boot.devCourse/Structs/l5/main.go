@@ -2,6 +2,7 @@
 package main
 
 type sender struct {
+	user
 	rateLimit int
 }
 
