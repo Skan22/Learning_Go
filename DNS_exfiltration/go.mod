@@ -1,10 +1,9 @@
-module github.com/Skan22/LEARNING_GO/DNS_Sniffer
+module github.com/Skan22/dnsexflitration
 
-go 1.24.3
+go 1.25.0
 
 require (
 	github.com/confluentinc/confluent-kafka-go/v2 v2.14.1 // indirect
 	github.com/google/gopacket v1.1.19 // indirect
 	golang.org/x/sys v0.25.0 // indirect
-    
 )
