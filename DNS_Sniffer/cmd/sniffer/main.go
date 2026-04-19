@@ -1,43 +1,12 @@
-package main 
+package main
+
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"log"
-	"net/http"
-	"strconv"
-	"sync"
-	"time"
+	"github.com/Skan22/LEARNING_GO/DNS_Sniffer/internal/config"
+	"github.com/Skan22/LEARNING_GO/DNS_Sniffer/internal/capture"
+	"github.com/Skan22/LEARNING_GO/DNS_Sniffer/internal/dns"
+	"github.com/Skan22/LEARNING_GO/DNS_Sniffer/internal/kafka"
 
-	"github.com/google/gopacket"
-	"github.com/google/gopacket/layers"
-	"github.com/google/gopacket/pcap"
+	"os"
+    "os/signal"
+    "syscall"
 )
-
-
-var(
-	deviceName string 
-	InetAdrr string
-	
-	handle *pcap.Handle 
-	
-	err error 
-	
-	SrcIP string
-	DestIP string
-	// DB params go here (kafka or clickhouse )
-)
-
-
-type DnsMsg struct {
-	Timestamp string
-	SourceIP	string
-	DestinationIP string
-	DNS_Query string
-	DNS_Answer []string
-	DNS_Answer_TTL []string
-	NumberOfAnswers string
-	DNS_Response_Code string
-	DnsOpCode string
-
-}

@@ -1,9 +1,14 @@
 package kafka
 
 import (
+    "github.com/Skan22/LEARNING_GO/DNS_Sniffer/internal/config"
+	"github.com/Skan22/LEARNING_GO/DNS_Sniffer/internal/dns"
+	"encoding/json"
 	"fmt"
-	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
+    kafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
+    dnspkg "github.com/skan/dns-sniffer/internal/dns"
 )
+
 
 func main() {
 
@@ -11,6 +16,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
 
 	defer p.Close()
 
