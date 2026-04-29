@@ -10,7 +10,7 @@ import (
 
 func worker(ports chan int , wg *sync.WaitGroup){
 	for p:=range ports {
-		adress := fmt.Sprintf("google.com:%d",p)
+		adress := fmt.Sprintf("supcom.tn:%d",p)
 		conn,err := net.Dial("tcp",adress)
 		if err !=nil{
 			continue

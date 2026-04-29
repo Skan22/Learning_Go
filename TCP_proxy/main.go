@@ -1,45 +1,53 @@
 package main
 
 import (
-	"fmt"
+	"io"
 	"log"
-	"os"
+	"net"
 )
 
-type FooReader struct{}
+func echo(conn net.Conn) {
+	defer conn.Close()
 
-func (fooReader *FooReader) Read(b []byte) (int, error) {
-	fmt.Print("in > ")
-	return os.Stdin.Read(b)
+	b:= make([]byte,1024)
+
+	for {
+		size ,err := conn.Read(b[:])
+		if err ==io.EOF{
+			log.Println("Client disconnected")
+			break
+		}
+		if err!=nil{
+			log.Println("Unexpected Error")
+			break
+		}
+		log.Printf("Received %d bytes: %s\n", size, string(b))
+		log.Println("Writing Data")
+
+		if _,err :=conn.Write(b[0:size]);err!=nil{
+			log.Fatalln("Unable to Write Data")
+		}
+		log.Println("Data Written Successfully")
+	
+	
+	}
 }
 
-type FooWriter struct{}
 
-func (foowriter *FooWriter) Write(b []byte) (int, error) {
-	fmt.Print("out > ")
-	return os.Stdout.Write(b)
-}
 
 func main() {
-
-	var (
-		reader FooReader
-		writer FooWriter
-	)
-	// 	    Buffer
-	input := make([]byte, 4096)
-
-	s, err := reader.Read(input)
-	if err != nil {
-		log.Fatalln("Unable to Read Data")
+	listener,err := net.Listen("tcp",":20080")
+	if err!=nil {
+		log.Fatalln("Unable to bind port")
 	}
-	fmt.Printf("Read %d bytes from stdin\n", s)
-
-	// Use writer to write output.
-	s, err = writer.Write(input)
-	if err != nil {
-		log.Fatalln("Unable to write data")
+	log.Println("Listening on port 0.0.0.0:20080")
+	for {
+		// main thread blocks here on listener.Accept()
+		conn,err:=listener.Accept()
+		log.Println("Received Connection")
+		if err!=nil {
+			log.Fatalln("Unable to accept connection")
+		}
+		go echo(conn)
 	}
-	fmt.Printf("Wrote %d bytes to stdout\n", s)
-
 }
